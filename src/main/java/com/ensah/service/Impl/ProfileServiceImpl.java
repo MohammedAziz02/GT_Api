@@ -7,26 +7,25 @@ import com.ensah.dto.UserDto;
 import com.ensah.payload.response.MessageResponse;
 import com.ensah.repository.UserRepository;
 import com.ensah.service.ProfileService;
+import com.ensah.utils.ImageUtils;
+import com.ensah.utils.UserUtils;
 import com.ensah.web.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Optional;
-
+import java.io.IOException;
 @Slf4j
 @Service
 public class ProfileServiceImpl implements ProfileService {
 
     @Autowired
     private UserRepository userRepository;
-
-
     @Autowired
     private ModelMapper modelMapper;
 
@@ -75,6 +74,21 @@ public class ProfileServiceImpl implements ProfileService {
         user.setPassword(newHashedPassword);
         userRepository.save(user);
         return new ResponseEntity<>(new MessageResponse("Yeah ! Your Password is changed "),HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<MessageResponse> changePicture(MultipartFile picture) throws IOException {
+            String academicEmail= UserUtils.getLoggedinUser();
+            log.info("changePicture  of user "+ academicEmail);
+            User loggedUser= userRepository.findUserByAcademicemail(academicEmail).orElseThrow(()-> new NotFoundException("user with email " +academicEmail+ " not found"));
+            String nameofpicture = loggedUser.getPicture();
+            log.info("old picture of user is "+ nameofpicture);
+            ImageUtils.deleteImage(nameofpicture);
+            String nameofnewpicture = ImageUtils.saveImage(picture);
+        log.info("new picture of user is "+ nameofnewpicture);
+            loggedUser.setPicture(nameofnewpicture);
+            userRepository.save(loggedUser);
+            return  new ResponseEntity<>(new MessageResponse(nameofnewpicture),HttpStatus.OK);
     }
 
 }

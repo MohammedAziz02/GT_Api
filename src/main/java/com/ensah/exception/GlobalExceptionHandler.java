@@ -63,4 +63,6 @@ public class GlobalExceptionHandler {
         body.put("errors", errors);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+
+
 }
