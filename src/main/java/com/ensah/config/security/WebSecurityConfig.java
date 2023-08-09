@@ -60,11 +60,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //cors().and().
-        http.csrf().disable()
+        http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/test/**").permitAll()
+                .authorizeRequests().antMatchers("/v1/api/auth/**").permitAll()
+                .antMatchers("/v1/api/reservation/**").permitAll()
                 .antMatchers("/v1/api/shared/profile/**").permitAll()
                 .antMatchers("/swagger-ui/**").permitAll()
                 .anyRequest().authenticated();

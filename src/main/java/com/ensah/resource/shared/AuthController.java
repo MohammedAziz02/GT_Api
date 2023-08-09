@@ -2,7 +2,6 @@ package com.ensah.resource.shared;
 
 import com.ensah.domain.User;
 import com.ensah.payload.request.LoginRequest;
-import com.ensah.payload.request.SignupRequest;
 import com.ensah.payload.response.JwtResponse;
 import com.ensah.payload.response.MessageResponse;
 import com.ensah.repository.UserRepository;
@@ -12,7 +11,6 @@ import com.ensah.utils.ImageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,8 +22,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -39,12 +35,10 @@ import java.util.Map;
  * @version 1.0
  */
 
-
-@CrossOrigin(origins = "*")
-@RestController
-@RequestMapping("/api/auth")
 @Slf4j
 @Validated
+@RestController
+@RequestMapping("/v1/api/auth")
 public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;

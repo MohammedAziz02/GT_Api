@@ -1,6 +1,7 @@
 package com.ensah.domain;
 import com.ensah.commons.AbstractEntity;
 import com.ensah.constantes.ERole;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,6 +36,7 @@ public class User  extends AbstractEntity {
 
     private String grade;
 
+    @JsonManagedReference
     @OneToMany(mappedBy ="user")
     private List<Reservation> reservationList =new ArrayList<>();
 
