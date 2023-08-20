@@ -28,10 +28,10 @@ public class Reservation extends AbstractEntity {
     @Column(columnDefinition = "DATETIME")
     private LocalDateTime date_match;
     private String against_who;
-    @JsonBackReference
+//    @JsonBackReference
     @OneToOne
     private Terrain terrain;
-    @JsonBackReference
+//    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

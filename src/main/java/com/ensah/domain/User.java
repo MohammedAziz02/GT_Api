@@ -1,6 +1,7 @@
 package com.ensah.domain;
 import com.ensah.commons.AbstractEntity;
 import com.ensah.constantes.ERole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,13 +31,18 @@ public class User  extends AbstractEntity {
     private String phonenumber;
     private String normalemail;
     private String academicemail;
+    @JsonIgnore
     private String password;
+
     private String picture;
+    @JsonIgnore
     private String role;
+
 
     private String grade;
 
-    @JsonManagedReference
+//    @JsonManagedReference
+    @JsonIgnore
     @OneToMany(mappedBy ="user")
     private List<Reservation> reservationList =new ArrayList<>();
 

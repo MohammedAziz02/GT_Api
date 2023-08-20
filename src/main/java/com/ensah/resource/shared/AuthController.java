@@ -22,6 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -94,7 +96,7 @@ public class AuthController {
                                           @RequestParam("grade") @NotNull(message = "grade must be not null") String grade,
                                           @RequestParam("password") @NotNull(message = "password must be not null") String password,
                                           @RequestParam("picture") @NotNull(message = "picture must be not null") MultipartFile picture
-                                          ) throws IOException {
+                                          ) throws IOException, MessagingException {
 
                          log.info(" firstname {} lastname {} email {} password", firstName, lastName,normalEmail,password);
 
@@ -116,7 +118,9 @@ public class AuthController {
 
         User user = new User(firstName, lastName, academicEmail, normalEmail, mobilePhone, encoder.encode(password), pathImage, role, grade);
         User x = userRepository.save(user);
-        emailService.sendSimpleMessage(normalEmail, "ENSAH : SERVICE DE GESTION DE TERRAIN ", "Bienvenue " + firstName + " " + lastName + "\r\n" + " nous vous informorons que vous avez bien inscrit dans l'application GESTION de TERRAIN DE L'ENSAH \n Merci");
+//        emailService.sendSimpleMessage(normalEmail, "ENSAH : SERVICE DE GESTION DE TERRAIN ", "Bienvenue " + firstName + " " + lastName + "\r\n" + " nous vous informorons que vous avez bien inscrit dans l'application GESTION de TERRAIN DE L'ENSAH \n Merci");
+        emailService.sendMessageWithAttachment(normalEmail,"ENSAH : SERVICE DE GESTION DE TERRAIN",String.format("<html><body><h1>Welcome %s %s </h1><p>Thank you for your registration .ENSAH TERRAIN SERVICE COPIRIGHTS / AZIZ MOHAMMED </p><img width=\"100\" height=\"100\" src='cid:logo'>" +
+                "</body></html>",firstName,lastName));
         log.info("User saved " + x);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 

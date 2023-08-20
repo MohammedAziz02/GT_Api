@@ -1,6 +1,7 @@
 package com.ensah.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -43,17 +44,20 @@ public class EmailService {
 
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        helper.setFrom("noreply@baeldung.com");
+        helper.setFrom("khokhabarkouka@gmail.com");
         helper.setTo(to);
         helper.setSubject(subject);
-        helper.setText(text);
+        helper.setText(text,true);
 
-        Resource resource = resourceLoader.getResource("classpath:/attachments/attachement.png" );
-        File fileimg = resource.getFile();
+//        Resource resource = resourceLoader.getResource("classpath:/attachments/logo.png" );
+//        File fileimg = resource.getFile();
+//
+//        FileSystemResource file
+//                = new FileSystemResource(fileimg);
+//        helper.addAttachment("Invoice", file);
 
-        FileSystemResource file
-                = new FileSystemResource(fileimg);
-        helper.addAttachment("Invoice", file);
+        ClassPathResource logoResource = new ClassPathResource("/attachments/logo.png");
+        helper.addInline("logo", logoResource);
 
         emailSender.send(message);
 

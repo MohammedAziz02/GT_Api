@@ -17,7 +17,7 @@ public class ReservationDto {
     private LocalDateTime date_match;
     private String against_who;
 
-//    private Terrain terrain;
+    private Terrain terrain;
 
-//    private User user;
+    private User user;
 }
