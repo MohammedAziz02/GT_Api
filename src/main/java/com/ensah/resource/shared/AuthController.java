@@ -127,18 +127,5 @@ public class AuthController {
 
 }
 
-    @GetMapping("/user")
-    public String getUserDetails(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Map<String, String> test) {
-
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-//            String currentUserName = authentication.getName();
-//            return currentUserName;
-//        }else{
-//            throw new RuntimeException("No User Authentication");
-//        }
-//        return "User Details: " + userDetails.getUsername()+ test.get("name");
-        return null;
-    }
 
 }

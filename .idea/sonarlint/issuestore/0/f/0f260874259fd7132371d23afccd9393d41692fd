@@ -1,11 +1,0 @@
-
-J
-java:S5411i"(Use a primitive boolean expression here.(×ëıäûÿÿÿÿ8»Â’ë 1
-C
-java:S1452@"&Remove usage of generic wildcard type.(ªûšÛ8ÎÂ’ë 1
-B
-java:S1452Z"&Remove usage of generic wildcard type.(ÔË¥8ÜÂ’ë 1
-}
-java:S3923q"[Remove this conditional structure or edit its code blocks so that they're not all the same.(ìğŒşúÿÿÿÿ8ãÂ’ë 1
-]	java:S125y"<This block of commented-out lines of code should be removed.(û¼ù¬ÿÿÿÿÿ8òÂ’ë 1
-Y	java:S125…"<This block of commented-out lines of code should be removed.(ÿ®ùé8÷Â’ë 1

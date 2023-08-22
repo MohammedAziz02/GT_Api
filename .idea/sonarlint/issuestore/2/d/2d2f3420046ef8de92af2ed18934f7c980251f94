@@ -1,9 +1,0 @@
-
-_
-java:S1874"DRemove this use of "WebSecurityConfigurerAdapter"; it is deprecated.(Ã÷ ´ıÿÿÿÿ
-g
-java:S1128"KRemove this unused import 'org.springframework.web.cors.CorsConfiguration'.(î¤·`8´ó†Ó1
-s
-java:S1128"QRemove this unused import 'org.springframework.web.cors.CorsConfigurationSource'.(ŒºÏøşÿÿÿÿ8µó†Ó1
-{
-java:S1128"YRemove this unused import 'org.springframework.web.cors.UrlBasedCorsConfigurationSource'.(µ²İûùÿÿÿÿ8µó†Ó1

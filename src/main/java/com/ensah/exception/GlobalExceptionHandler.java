@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> handleThrowable(final Exception exception) {
         log.warn("catched error [NotFoundException] : {} ", exception.getMessage());
-        return  new ResponseEntity<>(new MessageResponse("Academic email not found"),HttpStatus.NOT_FOUND);
+        return  new ResponseEntity<>(new MessageResponse(exception.getMessage()),HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Throwable.class)
