@@ -2,12 +2,20 @@ package com.ensah.service.Impl;
 
 import com.ensah.domain.PasswordResetToken;
 import com.ensah.domain.User;
+import com.ensah.payload.response.MessageResponse;
 import com.ensah.repository.PasswordTokenRepository;
 import com.ensah.repository.UserRepository;
 import com.ensah.service.UserService;
+import com.ensah.utils.EmailService;
 import com.ensah.web.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,18 +26,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     PasswordTokenRepository passwordTokenRepository;
 
-    @Override
-    public User findUserByAcademicEmail(String academicEmail) {
-        return userRepository.findUserByAcademicemail(academicEmail).orElseThrow(()->new NotFoundException("academic email not found" + academicEmail));
-    }
+    @Autowired
+    EmailService emailService;
 
-    @Override
+
     public void createPasswordResetTokenForUser(User user, String token) {
         PasswordResetToken myToken = new PasswordResetToken(token, user);
         passwordTokenRepository.save(myToken);
     }
 
-    @Override
     public Boolean validatePasswordResetToken(String token) {
         PasswordResetToken passToken = passwordTokenRepository.findByToken(token);
         if(passToken==null) return false;
@@ -38,5 +43,29 @@ public class UserServiceImpl implements UserService {
 
 
 
+    @Override
+    public ResponseEntity<MessageResponse> resetPassword(String userEmail) throws MessagingException, IOException {
+        User user =  userRepository.findUserByAcademicemail(userEmail).orElseThrow(()->new NotFoundException("academic email not found " + userEmail));
+        String token = UUID.randomUUID().toString();
+        createPasswordResetTokenForUser(user, token);
+        String url = "<p>\n" +
+                "    hello "+  user.getFirstName() + " "+ user.getLastName() + ", \n" +
+                "    you're in the reset Password page\n" +
+                "    <a href='http://localhost:4200/accueil/verify-token/"+token+"'> click here</a>" +
+                "</p>";
 
+        emailService.sendMessageWithAttachment(user.getNormalemail(),"Reset Password",url);
+        return  new ResponseEntity<>(new MessageResponse("Email reset password Sended successfully verify your Email : "+user.getNormalemail()), HttpStatus.OK);
+
+    }
+
+
+    @Override
+    public ResponseEntity<Boolean> showChangePasswordPage(String token) {
+        boolean isvalid = validatePasswordResetToken(token);
+        if (isvalid){
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(false, HttpStatus.OK);
+    }
 }

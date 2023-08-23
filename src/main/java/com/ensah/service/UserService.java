@@ -1,12 +1,21 @@
 package com.ensah.service;
 
 import com.ensah.domain.User;
+import com.ensah.payload.response.MessageResponse;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.mail.MessagingException;
+import java.io.IOException;
 
 public interface UserService {
 
-    User  findUserByAcademicEmail(String academicEmail);
 
-    void createPasswordResetTokenForUser(User user, String token);
 
-     Boolean validatePasswordResetToken(String token);
+
+
+
+    public ResponseEntity<Boolean> showChangePasswordPage(String token);
+
+    public ResponseEntity<MessageResponse> resetPassword(String userEmail) throws MessagingException, IOException;
 }
