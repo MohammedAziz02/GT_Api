@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -48,13 +49,12 @@ public class UserServiceImpl implements UserService {
         User user =  userRepository.findUserByAcademicemail(userEmail).orElseThrow(()->new NotFoundException("academic email not found " + userEmail));
         String token = UUID.randomUUID().toString();
         createPasswordResetTokenForUser(user, token);
-        String url = "<p>\n" +
-                "    hello "+  user.getFirstName() + " "+ user.getLastName() + ", \n" +
-                "    you're in the reset Password page\n" +
-                "    <a href='http://localhost:4200/accueil/verify-token/"+token+"'> click here</a>" +
-                "</p>";
-
-        emailService.sendMessageWithAttachment(user.getNormalemail(),"Reset Password",url);
+        // context adding variable data to template like binding data
+        Context context = new Context();
+        context.setVariable("firstName", user.getFirstName());
+        context.setVariable("lastName", user.getLastName());
+        context.setVariable("token",token);
+        emailService.sendEmailWithHtmlTemplate(user.getNormalemail(),"Reset Password","reset-password-template",context);
         return  new ResponseEntity<>(new MessageResponse("Email reset password Sended successfully verify your Email : "+user.getNormalemail()), HttpStatus.OK);
 
     }

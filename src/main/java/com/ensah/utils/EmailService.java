@@ -9,6 +9,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -24,11 +26,16 @@ public class EmailService {
     @Autowired
     ResourceLoader resourceLoader;
 
+    @Autowired
+    private  TemplateEngine templateEngine;
+
+
+
     public void sendSimpleMessage(
             String to, String subject, String text) {
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("noreply@baeldung.com");
+        message.setFrom("ensahterrainservice@gmail.com");
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
@@ -44,7 +51,7 @@ public class EmailService {
 
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        helper.setFrom("khokhabarkouka@gmail.com");
+        helper.setFrom("ensahterrainservice@gmail.com");
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(text,true);
@@ -56,10 +63,30 @@ public class EmailService {
 //                = new FileSystemResource(fileimg);
 //        helper.addAttachment("Invoice", file);
 
-        ClassPathResource logoResource = new ClassPathResource("/attachments/logo.png");
+        ClassPathResource logoResource = new ClassPathResource("/attachments/footer.png");
         helper.addInline("logo", logoResource);
 
         emailSender.send(message);
 
+    }
+
+
+    public void sendEmailWithHtmlTemplate(String to, String subject, String templateName, Context context) throws MessagingException {
+        MimeMessage mimeMessage = emailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,true, "UTF-8");
+
+        try {
+            helper.setTo(to);
+            helper.setSubject(subject);
+            String htmlContent = templateEngine.process(templateName, context);
+            helper.setText(htmlContent, true);
+
+            ClassPathResource imageResource = new ClassPathResource("/attachments/footer.png");
+            helper.addInline("footer", imageResource);
+
+            emailSender.send(mimeMessage);
+        } catch (MessagingException e) {
+            throw  new RuntimeException("Could not send email");
+        }
     }
 }
