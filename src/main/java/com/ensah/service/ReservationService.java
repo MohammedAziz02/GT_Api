@@ -27,5 +27,9 @@ public interface ReservationService {
 
     public ResponseEntity<List<ReservationDto>> getMyReservation(String academicEmail);
 
+    public ResponseEntity<List<ReservationDto>> getAllReservations();
+
+    public ResponseEntity<Integer> deleteReservationById(Long id);
+
 }
 

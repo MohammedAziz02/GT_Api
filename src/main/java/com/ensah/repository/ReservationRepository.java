@@ -44,6 +44,13 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
     @Query("select new com.ensah.dto.ReservationDto(r.id,r.date_reservation,r.date_match,r.against_who,r.terrain,r.user) from Reservation  r where r.user.academicemail=:academicemail")
     List<ReservationDto> allReservationMadeByUser(String academicemail);
 
+ @Query("select new com.ensah.dto.ReservationDto(r.id,r.date_reservation,r.date_match,r.against_who,r.terrain,r.user) from Reservation  r")
+ List<ReservationDto> allReservations();
+
+ @Transactional
+ Integer deleteReservationById(Long id);
+
+
 
 
 

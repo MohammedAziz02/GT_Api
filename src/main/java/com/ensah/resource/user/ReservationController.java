@@ -15,10 +15,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -73,6 +71,18 @@ public class ReservationController {
     public ResponseEntity<List<ReservationDto>> getMyReservation(@RequestBody String academicEmail) {
        return reservationService.getMyReservation(academicEmail);
     }
+
+
+    @GetMapping("/allreservations")
+    public ResponseEntity<List<ReservationDto>> getAllReservations() {
+        return reservationService.getAllReservations();
+    }
+
+    @PostMapping("/deletereservationbyid")
+    public ResponseEntity<Integer> deleteReservationById(@RequestBody Long id){
+        return reservationService.deleteReservationById(id);
+    }
+
 
 
 }

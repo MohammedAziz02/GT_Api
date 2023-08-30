@@ -117,4 +117,19 @@ public class ReservationServiceImpl implements ReservationService {
         }
         return new ResponseEntity<>(reservationlist,HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<List<ReservationDto>> getAllReservations() {
+        List<ReservationDto> allReservations = reservationRepository.allReservations();
+        if(allReservations.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(allReservations,HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Integer> deleteReservationById(Long id) {
+        log.info("weeeeeeeeeeeeeeeeeee "+id);
+        return new ResponseEntity<>(reservationRepository.deleteReservationById(id),HttpStatus.OK);
+    }
 }
