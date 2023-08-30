@@ -68,5 +68,12 @@ public class ReservationController {
        return reservationService.getMatchesofToday(today);
     }
 
+
+    @PostMapping("/myreservations")
+    public ResponseEntity<List<ReservationDto>> getMyReservation(@RequestBody String academicEmail) {
+       return reservationService.getMyReservation(academicEmail);
+    }
+
+
 }
 

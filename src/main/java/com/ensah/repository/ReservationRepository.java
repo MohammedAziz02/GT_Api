@@ -41,6 +41,11 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
     List<ReservationDto> findByDate_match(LocalDateTime datetoday00,LocalDateTime datetoday23,String nameterrain);
 
 
+    @Query("select new com.ensah.dto.ReservationDto(r.id,r.date_reservation,r.date_match,r.against_who,r.terrain,r.user) from Reservation  r where r.user.academicemail=:academicemail")
+    List<ReservationDto> allReservationMadeByUser(String academicemail);
+
+
+
 
 
 }

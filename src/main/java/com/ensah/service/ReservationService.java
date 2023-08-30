@@ -24,5 +24,8 @@ public interface ReservationService {
 
     public ResponseEntity<List<ReservationDto>> getMatchesofToday(ReservationOfToday today);
 
+
+    public ResponseEntity<List<ReservationDto>> getMyReservation(String academicEmail);
+
 }
 

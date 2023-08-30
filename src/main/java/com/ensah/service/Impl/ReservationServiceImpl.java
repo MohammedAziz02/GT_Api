@@ -108,4 +108,13 @@ public class ReservationServiceImpl implements ReservationService {
         }
         return new ResponseEntity<>(x, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<List<ReservationDto>> getMyReservation(String academicEmail) {
+        List<ReservationDto> reservationlist = reservationRepository.allReservationMadeByUser(academicEmail);
+        if(reservationlist.isEmpty()){
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(reservationlist,HttpStatus.OK);
+    }
 }
