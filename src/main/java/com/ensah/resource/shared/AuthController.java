@@ -6,6 +6,7 @@ import com.ensah.payload.response.JwtResponse;
 import com.ensah.payload.response.MessageResponse;
 import com.ensah.repository.UserRepository;
 import com.ensah.config.security.jwt.JwtUtils;
+import com.ensah.service.AuthService;
 import com.ensah.utils.EmailService;
 import com.ensah.utils.ImageUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -43,47 +44,14 @@ import java.util.Map;
 @RestController
 @RequestMapping("/v1/api/auth")
 public class AuthController {
-    @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    PasswordEncoder encoder;
-
-    @Autowired
-    JwtUtils jwtUtils;
-
-
-
-
-    @Autowired
-    EmailService emailService;
+  @Autowired
+  private AuthService authService;
 
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody @Valid LoginRequest loginRequest) {
 
-        log.info("Authenticating " + loginRequest);
-
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getAcademicmail(), loginRequest.getPassword()));
-
-        log.info("authentication " + authentication.isAuthenticated());
-
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        log.info("authentication {} and authentication {} ", authentication.isAuthenticated(),SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        String jwt = jwtUtils.generateJwtToken(authentication);
-
-        log.info("jwt generated is " + jwt);
-
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Collection<? extends GrantedAuthority> roles = userDetails.getAuthorities();
-        log.info("user authority " + roles.iterator().next().getAuthority());
-        String role = roles.iterator().next().getAuthority();
-
-        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(),
-                role));
+     return authService.authenticateUser(loginRequest);
     }
 
 
@@ -99,35 +67,7 @@ public class AuthController {
                                           @RequestParam("picture") @NotNull(message = "picture must be not null") MultipartFile picture
                                           ) throws IOException, MessagingException {
 
-                         log.info(" firstname {} lastname {} email {} password", firstName, lastName,normalEmail,password);
-
-        log.info("singup  User ");
-
-        if (userRepository.existsByAcademicemail(academicEmail)) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: academic email is already taken!"));
-        }
-
-
-        String pathImage;
-        if (role.equals("ADMIN")) {
-            pathImage = ImageUtils.saveImage(picture);
-        } else {
-            pathImage = ImageUtils.saveImage(picture);
-        }
-
-        User user = new User(firstName, lastName, academicEmail, normalEmail, mobilePhone, encoder.encode(password), pathImage, role, grade);
-        User x = userRepository.save(user);
-//        emailService.sendSimpleMessage(normalEmail, "ENSAH : SERVICE DE GESTION DE TERRAIN ", "Bienvenue " + firstName + " " + lastName + "\r\n" + " nous vous informorons que vous avez bien inscrit dans l'application GESTION de TERRAIN DE L'ENSAH \n Merci");
-//        emailService.sendMessageWithAttachment(normalEmail,"ENSAH : SERVICE DE GESTION DE TERRAIN",String.format("<html><body><h1>Welcome %s %s </h1><p>Thank you for your registration .ENSAH TERRAIN SERVICE COPIRIGHTS / AZIZ MOHAMMED </p><img width=\"100\" height=\"100\" src='cid:logo'>" +
-//                "</body></html>",firstName,lastName));
-        Context context = new Context();
-        context.setVariable("firstName", firstName);
-        context.setVariable("lastName", lastName);
-        emailService.sendEmailWithHtmlTemplate(normalEmail,"Account successfully created","account-created-template",context);
-        log.info("User saved " + x);
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+                        return authService.registerUser(firstName,lastName,normalEmail,academicEmail,mobilePhone,role,grade,password,picture);
 
 
 }
