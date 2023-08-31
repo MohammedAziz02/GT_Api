@@ -1,4 +1,4 @@
-package com.ensah.service;
+package com.ensah.service.Impl;
 
 import com.ensah.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

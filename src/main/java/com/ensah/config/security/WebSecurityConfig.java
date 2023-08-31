@@ -1,7 +1,7 @@
 package com.ensah.config.security;
 import com.ensah.config.security.jwt.AuthTokenFilter;
 import com.ensah.config.security.jwt.JwtAuthenticationEntryPoint;
-import com.ensah.service.UserDetailsServiceImpl;
+import com.ensah.service.Impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,9 +16,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 /**
  * @author med_Aziz
@@ -64,8 +61,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/v1/api/auth/**").permitAll()
-                .antMatchers("/v1/api/reservation/**").permitAll()
-                .antMatchers("/v1/api/shared/profile/**").permitAll()
+                .antMatchers("/v1/api/reservation/matchesoftoday").permitAll()
+                .antMatchers("/v1/api/reservation/**").authenticated()
+                .antMatchers("/v1/api/shared/profile/**").authenticated()
                 .antMatchers("/v1/api/user/**").permitAll()
                 .antMatchers("/swagger-ui/**").permitAll()
                 .anyRequest().authenticated();
