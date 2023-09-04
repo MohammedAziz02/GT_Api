@@ -1,0 +1,8 @@
+
+Q	java:S107"<Method has 9 parameters, which is greater than 7 authorized.(Éçâ¢
+A
+java:S1452"&Remove usage of generic wildcard type.(äêşÿÿÿÿ
+<
+java:S1452"&Remove usage of generic wildcard type.(Éçâ¢
+l
+java:S1128"QRemove this unused import 'org.springframework.web.bind.annotation.RequestParam'.(Â¬À·ùÿÿÿÿ
