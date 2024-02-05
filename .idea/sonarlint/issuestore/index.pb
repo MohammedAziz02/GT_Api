@@ -47,3 +47,5 @@ k
 ;src/main/java/com/ensah/resource/shared/AuthController.java,0\f\0f260874259fd7132371d23afccd9393d41692fd
 n
 >src/main/java/com/ensah/resource/shared/ProfileController.java,c\1\c1ec765ff8998a37f1328bce5e96c1b4e164e540
+7
+pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec

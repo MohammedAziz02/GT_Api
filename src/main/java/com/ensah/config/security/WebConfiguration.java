@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Slf4j
 public class WebConfiguration implements WebMvcConfigurer {
 
+    public static Integer x= 3;
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         log.info("Adding CORS headers");
